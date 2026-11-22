@@ -1,0 +1,15 @@
+Input: light-field camera grid, candidate disparity values
+1. Extend the focus candidate range on both sides by the symmetry window.
+2. Refocus the light field at all these disparities by shift-and-average.
+3. For each pixel and candidate disparity:
+   - compute ordinary symmetry and centered antisymmetry costs.
+   - compute robust color+gradient camera correspondence costs.
+   - predict the focal profile from the center camera, initially assuming equal local disparities.
+4. Estimate an occlusion probability from the three paper measurements.
+5. Combine normal/antisymmetric scores using the occlusion probability.
+6. Estimate the initial disparity from the combined data costs.
+7. Repeat:
+   - re-render the predicted local focal profiles using the current disparity map.
+   - recompute the data cost and disparity estimates.
+8. Minimize combined data and spatial smoothness with alpha-beta swap graph cuts.
+9. Save disparity and occlusion maps; compute evaluation errors using held-out ground truth.
